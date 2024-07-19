@@ -15,6 +15,7 @@ func NewRoutes() routes {
 	v1 := r.router.Group("/v1")
 	r.addUserRoutes(v1)
 	r.AddShopRoutes(v1)
+	r.router.NoRoute(NotFound)
 	return r
 }
 
