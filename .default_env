@@ -1,0 +1,3 @@
+DB_LOGIN="admin"
+DB_NAME="goboilerplate"
+DB_PASSWORD="password"
