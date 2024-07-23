@@ -2,17 +2,55 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ssanyoq/go-boilerplate/src/models"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/ssanyoq/go-boilerplate/src/forms"
+	"github.com/ssanyoq/go-boilerplate/src/services"
 	"log"
 	"net/http"
 )
 
 func AllUsers(c *gin.Context) {
-	result, err := models.AllUsers()
+	//res, err := io.ReadAll(c.Request.Body)
+	//log.Printf("%s", string(res))
+	//if err != nil {
+	//	log.Print("bad bad")
+	//	c.AbortWithStatusJSON(500, gin.H{"Message": err})
+	//}
+	//c.JSON(200, gin.H{"message": res})
+	//return
+	result, err := services.AllUsers()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Message": "Database is ill today:("})
 		log.Print(err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"Message": result})
+}
+
+func OneUser(c *gin.Context) {
+
+}
+
+func Create(c *gin.Context) {
+	var userForm forms.UserForm
+	bindingError := c.ShouldBindBodyWith(&userForm, binding.JSON)
+	if bindingError != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": bindingError})
+		log.Print("Json didn't bind")
+		return
+	}
+	validationError := forms.ValidateUserForm(userForm)
+	if validationError != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": bindingError})
+		log.Print("Invalid thingy")
+		return
+	}
+
+	result, err := services.Create(userForm)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": bindingError})
+		log.Print("Bad dadabada")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "success", "userID": result})
 }
