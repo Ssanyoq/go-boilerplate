@@ -9,4 +9,6 @@ func (r routes) addUserRoutes(rg *gin.RouterGroup) {
 	users := rg.Group("/users")
 
 	users.GET("/", controllers.AllUsers)
+	users.POST("/", controllers.Create)
+
 }
