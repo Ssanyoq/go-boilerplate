@@ -11,7 +11,7 @@ import (
 // See: mail.ParseAddress()
 func Email(e string) bool {
 	_, err := mail.ParseAddress(e)
-	return err != nil
+	return err == nil
 }
 
 // Password validator checks if password is between 8 and 255
@@ -24,6 +24,6 @@ func Password(p string) bool {
 // long and is a string
 // (without any other symbols like spaces, numbers, etc.)
 func Name(n string) bool {
-	isString, _ := regexp.Match(`\s+`, []byte(n))
+	isString, _ := regexp.Match(`[:alpha]+`, []byte(n))
 	return len(n) >= 2 && len(n) <= 20 && isString
 }
