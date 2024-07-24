@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-gorp/gorp"
 	_ "github.com/lib/pq"
+	"github.com/ssanyoq/go-boilerplate/src/models"
 	"log"
 	"os"
 )
@@ -12,6 +13,7 @@ import (
 var db *gorp.DbMap
 
 func Init() {
+
 	authData := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("DB_LOGIN"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
@@ -20,6 +22,9 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+	db.AddTableWithName(models.User{}, "users").SetKeys(true, "id")
+	db.CreateTables()
+	db.TraceOn("[gorp]", log.New(os.Stdout, "boilerplate:", log.Lmicroseconds))
 }
 
 func ConnectDB(authData string) (*gorp.DbMap, error) {
@@ -34,7 +39,6 @@ func ConnectDB(authData string) (*gorp.DbMap, error) {
 	}
 
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
-	dbmap.TraceOn("[gorp]", log.New(os.Stdout, "golang-gin:", log.Lmicroseconds)) //Trace database requests
 	return dbmap, err
 }
 
