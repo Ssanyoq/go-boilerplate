@@ -22,9 +22,17 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	db.AddTableWithName(models.User{}, "users").SetKeys(true, "id")
+	db.DropTables()
+
+	table := db.AddTableWithName(models.User{}, "users")
+	table.SetKeys(true, "id")
+	table.ColMap("email").Unique = true
+
 	db.CreateTables()
-	db.TraceOn("[gorp]", log.New(os.Stdout, "boilerplate:", log.Lmicroseconds))
+
+	if os.Getenv("ENV") == "DEVELOPMENT" {
+		db.TraceOn("[gorp]", log.New(os.Stdout, "boilerplate:", log.Lmicroseconds))
+	}
 }
 
 func ConnectDB(authData string) (*gorp.DbMap, error) {
