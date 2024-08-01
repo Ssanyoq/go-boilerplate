@@ -20,16 +20,24 @@ func Init() {
 	var err error
 	db, err = ConnectDB(authData)
 	if err != nil {
+		println("Coudn't connect to the DB")
 		panic(err)
 	}
-	db.DropTables()
 
 	table := db.AddTableWithName(models.User{}, "users")
 	table.SetKeys(true, "id")
 	table.ColMap("email").Unique = true
 
-	db.CreateTables()
-
+	createTableErr := db.CreateTables()
+	if createTableErr != nil {
+		println("Couldn't create table")
+		panic(createTableErr.Error())
+	}
+	//dropTableErr := db.DropTables() // Uncomment if weird database data is encountered
+	//if dropTableErr != nil {
+	//	println("Drop table Error")
+	//	panic(dropTableErr.Error())
+	//}
 	if os.Getenv("ENV") == "DEVELOPMENT" {
 		db.TraceOn("[gorp]", log.New(os.Stdout, "boilerplate:", log.Lmicroseconds))
 	}
