@@ -13,7 +13,7 @@ func AllUsers() (users []models.User, err error) {
 	return users, err
 }
 
-func Create(uf forms.UserForm) (res int64, err error) {
+func Create(uf forms.UserForm) (err error) {
 	newUser := models.User{
 		ID:        0,
 		Email:     uf.Email,
@@ -23,8 +23,5 @@ func Create(uf forms.UserForm) (res int64, err error) {
 		UpdatedAt: 0,
 	}
 	err = db.GetDB().Insert(&newUser)
-	//  result, err := db.GetDB().Exec("insert into users (id, name, email, password, updated_at, created_at) values"+
-	//	" ($1, $2, $3, $4, $5, $6) returning id",
-	//	0, uf.Email, uf.Name, uf.Password, 0, 0)
-	return res, err
+	return err
 }
