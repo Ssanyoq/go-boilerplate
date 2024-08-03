@@ -27,19 +27,19 @@ func Create(uf forms.UserForm) (err error) {
 	return err
 }
 
-func Login(lf forms.LoginForm) (int64, error) {
+func Login(lf forms.LoginForm) (*models.User, error) {
 	var user models.User
 	dbError := db.GetDB().SelectOne(&user, "SELECT * FROM users WHERE email = $1", lf.Email)
 
 	if dbError != nil {
-		return -1, dbError
+		return nil, dbError
 	}
 	log.Printf("%s and %s", user.Password, lf.Password)
 	passwordError := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(lf.Password))
 	// !!! Turns out bcrypt is slow on purpose, so don't worry:)
 	if passwordError != nil {
-		return -1, passwordError
+		return nil, passwordError
 	}
 
-	return user.ID, nil
+	return &user, nil
 }

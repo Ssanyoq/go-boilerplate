@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ssanyoq/go-boilerplate/src/forms"
 	"github.com/ssanyoq/go-boilerplate/src/services"
+	"github.com/ssanyoq/go-boilerplate/src/utility"
 	"log"
 	"net/http"
 )
@@ -25,12 +26,17 @@ func Login(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": bindingError.Error()})
 		return
 	}
-	res, err := services.Login(loginForm)
+	user, err := services.Login(loginForm)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "success", "id": res})
+	err = utility.SetTokens(c, *user)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "success", "id": user.ID, "name": user.Name})
 
 }
 
