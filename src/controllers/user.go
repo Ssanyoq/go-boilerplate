@@ -31,16 +31,15 @@ func Create(c *gin.Context) {
 	}
 	validationError := forms.ValidateUserForm(userForm)
 	if validationError != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationError})
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": validationError.Error()})
 		log.Print("Invalid thingy")
 		return
 	}
-	res, err := services.Create(userForm)
+	err := services.Create(userForm)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err})
-		log.Print("Bad dadabada")
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		log.Printf("%s", err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "success", "id": res})
+	c.JSON(http.StatusOK, gin.H{"message": "success"})
 }
