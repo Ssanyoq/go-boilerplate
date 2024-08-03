@@ -13,6 +13,11 @@ type UserForm struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type LoginForm struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 func ValidateUserForm(f UserForm) error {
 	errorMsg := make([]string, 0)
 

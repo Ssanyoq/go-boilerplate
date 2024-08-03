@@ -18,7 +18,19 @@ func AllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"Message": result})
 }
 
-func OneUser(c *gin.Context) {
+func Login(c *gin.Context) {
+	var loginForm forms.LoginForm
+	bindingError := c.ShouldBindJSON(&loginForm)
+	if bindingError != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": bindingError.Error()})
+		return
+	}
+	res, err := services.Login(loginForm)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "success", "id": res})
 
 }
 

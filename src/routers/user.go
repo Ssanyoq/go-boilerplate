@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ssanyoq/go-boilerplate/src/controllers"
+	"github.com/ssanyoq/go-boilerplate/src/tests"
 )
 
 func (r routes) addUserRoutes(rg *gin.RouterGroup) {
@@ -10,5 +11,7 @@ func (r routes) addUserRoutes(rg *gin.RouterGroup) {
 
 	users.GET("/", controllers.AllUsers)
 	users.POST("/", controllers.Create)
+	users.PUT("/", tests.PrintBody) // FOR TESTS
+	users.POST("/login", controllers.Login)
 
 }
