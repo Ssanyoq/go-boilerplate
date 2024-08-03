@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/go-gorp/gorp"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -17,10 +18,14 @@ type User struct {
 func (u *User) PreInsert(s gorp.SqlExecutor) error {
 	u.CreatedAt = time.Now().UnixNano()
 	u.UpdatedAt = u.CreatedAt
+	pswd, _ := bcrypt.GenerateFromPassword([]byte(u.Password), 14)
+	u.Password = string(pswd)
 	return nil
 }
 
 func (u *User) PreUpdate(s gorp.SqlExecutor) error {
 	u.UpdatedAt = time.Now().UnixNano()
+	pswd, _ := bcrypt.GenerateFromPassword([]byte(u.Password), 14)
+	u.Password = string(pswd)
 	return nil
 }

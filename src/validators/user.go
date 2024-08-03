@@ -14,10 +14,11 @@ func Email(e string) bool {
 	return err == nil
 }
 
-// Password validator checks if password is between 8 and 255
-// characters long
+// Password validator checks if password is between 8 and 72
+// characters long.
+// Length is limited by bcrypt hashing methods
 func Password(p string) bool {
-	return len(p) >= 8 && len(p) < 256 // Temporary (probably)
+	return len(p) >= 8 && len(p) <= 72 // Temporary (probably)
 }
 
 // Name validator checks if given string is from 2 to 20 letters
