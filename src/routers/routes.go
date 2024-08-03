@@ -1,6 +1,9 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/ssanyoq/go-boilerplate/src/middlewares"
+)
 
 type routes struct {
 	router *gin.Engine
@@ -12,6 +15,7 @@ func NewRoutes() routes {
 	r := routes{
 		router: gin.Default(),
 	}
+	r.router.Use(middlewares.CORSMiddleware())
 	v1 := r.router.Group("/v1")
 	r.addUserRoutes(v1)
 	r.AddShopRoutes(v1)
