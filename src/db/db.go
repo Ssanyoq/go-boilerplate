@@ -28,7 +28,7 @@ func Init() {
 	table.SetKeys(true, "id")
 	table.ColMap("email").Unique = true
 
-	createTableErr := db.CreateTables()
+	createTableErr := db.CreateTablesIfNotExists()
 	if createTableErr != nil {
 		println("Couldn't create table")
 		panic(createTableErr.Error())
