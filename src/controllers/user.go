@@ -28,6 +28,7 @@ func Login(c *gin.Context) {
 	}
 	user, err := services.Login(loginForm)
 	if err != nil {
+		utility.ClearTokens(c) // grrr bad user grrr
 		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": err.Error()})
 		return
 	}

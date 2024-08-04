@@ -18,7 +18,7 @@ func SetTokens(c *gin.Context, user models.User) error {
 		"name": user.Name,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
-	signedString, err := token.SignedString(os.Getenv("JWT_SECRET_KEY"))
+	signedString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	if err != nil {
 		return err
 	}
@@ -32,5 +32,20 @@ func SetTokens(c *gin.Context, user models.User) error {
 		os.Getenv("ENV") == "PRODUCTION",
 		true,
 	)
+	return nil
+}
+
+// ClearTokens clears tokens that are made by
+// SetTokens. Use to punish for incorrect tokens
+// (suspicions on token forgery) or for incorrect
+// authorization data
+func ClearTokens(c *gin.Context) error {
+	c.SetCookie("jwt",
+		"oops sorry",
+		1, // minimal age possible
+		"/",
+		"localhost",
+		os.Getenv("ENV") == "PRODUCTION",
+		true)
 	return nil
 }
