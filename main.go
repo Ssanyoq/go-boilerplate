@@ -6,12 +6,13 @@ import (
 	"os"
 )
 
-func main() {
-
+func StartServer() {
 	db.Init()
-
 	hostname := os.Getenv("HOST_NAME")
 	router := routers.NewRoutes()
 	router.Run(hostname)
+}
 
+func main() {
+	StartServer()
 }
