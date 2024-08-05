@@ -1,18 +1,9 @@
 package main
 
 import (
-	"github.com/ssanyoq/go-boilerplate/src/db"
-	"github.com/ssanyoq/go-boilerplate/src/routers"
-	"os"
+	"github.com/ssanyoq/go-boilerplate/src/setup"
 )
 
-func StartServer() {
-	db.Init()
-	hostname := os.Getenv("HOST_NAME")
-	router := routers.NewRoutes()
-	router.Run(hostname)
-}
-
 func main() {
-	StartServer()
+	setup.StartServer()
 }

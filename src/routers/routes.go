@@ -28,3 +28,7 @@ func (r routes) Run(addr string) error {
 	log.Printf("Go to http://%s to use your stuff!", addr)
 	return r.router.Run(addr)
 }
+
+func (r routes) GetEngine() *gin.Engine {
+	return r.router
+}
