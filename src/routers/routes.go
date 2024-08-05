@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ssanyoq/go-boilerplate/src/middlewares"
+	"log"
 )
 
 type routes struct {
@@ -24,5 +25,6 @@ func NewRoutes() routes {
 }
 
 func (r routes) Run(addr string) error {
+	log.Printf("Go to http://%s to use your stuff!", addr)
 	return r.router.Run(addr)
 }
