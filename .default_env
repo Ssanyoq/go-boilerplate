@@ -1,3 +1,11 @@
 DB_LOGIN="admin"
 DB_NAME="goboilerplate"
 DB_PASSWORD="password"
+DB_DIALECT="postgres"
+
+HOST_NAME="127.0.0.1:8000"
+
+ENV="DEVELOPMENT"
+
+JWT_SECRET_KEY="boilerkey"
+JWT_AGE_S = 900
