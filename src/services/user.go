@@ -10,7 +10,6 @@ import (
 
 func AllUsers() (users []models.User, err error) {
 	_, err = db.GetDB().Select(&users, "SELECT * FROM users")
-	log.Printf("%+v", users)
 	return users, err
 }
 
